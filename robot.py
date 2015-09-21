@@ -28,17 +28,18 @@ if __name__ == '__main__':
 # if you need only one calculation you do not need the while
 while True:
         # set input values
-        my_input["ball_angle"] = sc.get_ball_angle()
-        my_input["target_angle"] = sc.get_target_angle()
+        my_input["ball_angle"] = math.degrees(sc.get_ball_angle())
+        my_input["target_angle"] = math.degrees(sc.get_target_angle())
  
         # calculate
         system.calculate(my_input, my_output)
  
         # now use outputs
-        angle = my_output["angle"]
+        angle = math.radians(my_output["angle"])
+        #angle = 0.0
         force_left = math.cos(angle) - math.sin(angle)
         force_right = math.cos(angle) + math.sin(angle)
 		
-        print force_left, force_right
+        print angle, force_left, force_right
         
         sc.act(force_left, force_right)

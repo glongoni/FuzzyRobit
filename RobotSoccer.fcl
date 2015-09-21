@@ -10,9 +10,9 @@ FUNCTION_BLOCK Inverted_Pendulum
     END_VAR
 
     FUZZIFY ball_angle
-        TERM left := (-90, 0) (-90, 1) (0, 0) ;
-        TERM front:= (-45, 0) (0, 1) (45, 0) ;
-        TERM right := (0, 0) (90, 1) (90, 0) ;
+        TERM left := (-180, 0) (-180, 1) (0, 0) ;
+        TERM front:= (-90, 0) (0, 1) (90, 0) ;
+        TERM right := (0, 0) (180, 1) (180, 0) ;
     END_FUZZIFY
 
     FUZZIFY target_angle
@@ -22,10 +22,10 @@ FUNCTION_BLOCK Inverted_Pendulum
     END_FUZZIFY
 
     DEFUZZIFY angle
-        TERM Left := -180 ;
-        TERM Front := 0 ;
-        TERM Right := 180 ;
-		ACCU:MAX;
+        TERM Left := -90;
+        TERM Front := 0;
+        TERM Right := 90;
+		ACCU: MAX;
         METHOD: COGS;(*MoM;*)
         DEFAULT := 0; 
     END_DEFUZZIFY
@@ -42,6 +42,10 @@ FUNCTION_BLOCK Inverted_Pendulum
         RULE 6: IF (ball_angle IS right) AND (target_angle IS left) THEN (angle IS Right);
         RULE 7: IF (ball_angle IS right) AND (target_angle IS front) THEN (angle IS Right);
         RULE 8: IF (ball_angle IS right) AND (target_angle IS right) THEN (angle IS Front);
+		
+        (*RULE 0: IF (ball_angle IS left) THEN (angle IS Left);*)
+        (*RULE 1: IF (ball_angle IS front) THEN (angle IS Front);*)
+        (*RULE 2: IF (ball_angle IS right) THEN (angle IS Right);*)
     END_RULEBLOCK
 
 END_FUNCTION_BLOCK
