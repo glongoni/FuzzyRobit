@@ -1,0 +1,47 @@
+FUNCTION_BLOCK Inverted_Pendulum
+
+    VAR_INPUT
+        ball_angle : REAL; (* RANGE(-pi .. pi) *)
+        target_angle : REAL; (* RANGE(-pi .. pi) *)
+    END_VAR
+
+    VAR_OUTPUT
+        angle : REAL; (* RANGE() *)
+    END_VAR
+
+    FUZZIFY ball_angle
+        TERM left := (-90, 0) (-90, 1) (0, 0) ;
+        TERM front:= (-45, 0) (0, 1) (45, 0) ;
+        TERM right := (0, 0) (90, 1) (90, 0) ;
+    END_FUZZIFY
+
+    FUZZIFY target_angle
+        TERM left := (-180, 0) (-180, 1) (0, 0) ;
+        TERM front:= (-90, 0) (0, 1) (90, 0) ;
+        TERM right := (0, 0) (180, 1) (180, 0) ;
+    END_FUZZIFY
+
+    DEFUZZIFY angle
+        TERM Left := -180 ;
+        TERM Front := 0 ;
+        TERM Right := 180 ;
+		ACCU:MAX;
+        METHOD: COGS;(*MoM;*)
+        DEFAULT := 0; 
+    END_DEFUZZIFY
+
+    RULEBLOCK first
+        AND:MIN;
+        (*ACCU:MAX;*)
+        RULE 0: IF (ball_angle IS left) AND (target_angle IS left) THEN (angle IS Front);
+        RULE 1: IF (ball_angle IS left) AND (target_angle IS front) THEN (angle IS Left);
+        RULE 2: IF (ball_angle IS left) AND (target_angle IS right) THEN (angle IS Left);
+        RULE 3: IF (ball_angle IS front) AND (target_angle IS left) THEN (angle IS Right);
+        RULE 4: IF (ball_angle IS front) AND (target_angle IS front) THEN (angle IS Front);
+        RULE 5: IF (ball_angle IS front) AND (target_angle IS right) THEN (angle IS Left);
+        RULE 6: IF (ball_angle IS right) AND (target_angle IS left) THEN (angle IS Right);
+        RULE 7: IF (ball_angle IS right) AND (target_angle IS front) THEN (angle IS Right);
+        RULE 8: IF (ball_angle IS right) AND (target_angle IS right) THEN (angle IS Front);
+    END_RULEBLOCK
+
+END_FUNCTION_BLOCK

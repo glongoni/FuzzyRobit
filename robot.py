@@ -2,24 +2,20 @@ import os
 import sys
 import math
 
-sys.path.append("C:\Users\Guilherme\Documents\Projetos\iperf-2.0.5-3-win32\pyfuzzy-0.1.0\fuzzy")
+sys.path.insert(0, "C:\Users\Eduardo\Documents\cic-12\ia\robotsoccer-python-master")
+sys.path.insert(0, "C:\Users\Eduardo\Downloads\pyfuzzy-0.1.0")
 
 import fuzzy.storage.fcl.Reader
 from robotsoccer import SoccerClient
-system = fuzzy.storage.fcl.Reader.Reader().load_from_file("Soccer Robot.fcl")
+system = fuzzy.storage.fcl.Reader.Reader().load_from_file("RobotSoccer.fcl")
 
 # preallocate input and output values
 my_input = {
 		"ball_angle" : 0.0,
-        "ball_distance" : 0.0,
-        "target_angle" : 0.0,
-        "obstacle_angle" : 0.0,
-        "obstacle_distance" : 0.0,
-        "spin" : 0.0
+        "target_angle" : 0.0
         }
 my_output = {
-        "force_left" : 0.0,
-        "force_right" : 0.0
+        "angle" : 0.0
         }
 
 if __name__ == '__main__': 
@@ -30,17 +26,19 @@ if __name__ == '__main__':
     sc.connect(host, port)
 
 # if you need only one calculation you do not need the while
-while true:
+while True:
         # set input values
         my_input["ball_angle"] = sc.get_ball_angle()
-        my_input["ball_distance"] = sc.get_distance()
-		my_input["target_angle"] = sc.get_target_angle()
-		my_input["obstacle_angle"] = sc.get_obstacle_angle()
-		my_input["obstacle_distance"] = sc.get_collision()
-		my_input["spin"] = sc.get_spin()
+        my_input["target_angle"] = sc.get_target_angle()
  
         # calculate
         system.calculate(my_input, my_output)
  
         # now use outputs
-        sc.act(my_output["force_left"], my_output[force_right])
+        angle = my_output["angle"]
+        force_left = math.cos(angle) - math.sin(angle)
+        force_right = math.cos(angle) + math.sin(angle)
+		
+        print force_left, force_right
+        
+        sc.act(force_left, force_right)
