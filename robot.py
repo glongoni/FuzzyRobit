@@ -3,8 +3,8 @@ import sys
 import math
 import time
 
-sys.path.insert(0, "C:\Users\Guilherme\Documents\Projetos\robotsoccer-python")
-sys.path.insert(0, "C:\Users\Guilherme\Documents\Projetos\pyfuzzy-0.1.0")
+sys.path.insert(0, "C:\Users\Eduardo\Documents\cic-12\ia\robotsoccer-python-master")
+sys.path.insert(0, "C:\Users\Eduardo\Downloads\pyfuzzy-0.1.0")
 
 import fuzzy.storage.fcl.Reader
 from robotsoccer import SoccerClient
@@ -13,7 +13,9 @@ system = fuzzy.storage.fcl.Reader.Reader().load_from_file("RobotSoccer.fcl")
 # preallocate input and output values
 my_input = {
 		"ball_angle" : 0.0,
-        "target_angle" : 0.0
+        "target_angle" : 0.0,
+		"robot_spin" : 0.0,
+		"ball_distance" : 0.0
         }
 my_output = {
         "r_right" : 0.0,
@@ -34,7 +36,7 @@ while True:
 		my_input["target_angle"] = math.degrees(sc.get_target_angle())
 		my_input["robot_spin"] = sc.get_spin()
 		my_input["ball_distance"] = sc.get_ball_distance()
-		
+		my_input["obstacle_distance"] = sc.get_obstacle_distance()
 		# calculate
 		system.calculate(my_input, my_output)
 		
@@ -52,6 +54,8 @@ while True:
 		force_left = my_output["r_left"]
 		force_right = my_output["r_right"]
 		
+		print force_left, force_right
+		
 		sc.act(force_left, force_right)
 		
-		time.sleep(0.4)
+		#time.sleep(0.4)
