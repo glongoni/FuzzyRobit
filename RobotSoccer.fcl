@@ -3,28 +3,60 @@ FUNCTION_BLOCK Inverted_Pendulum
     VAR_INPUT
         ball_angle : REAL; (* RANGE(-pi .. pi) *)
         target_angle : REAL; (* RANGE(-pi .. pi) *)
+		robot_spin : REAL; (* RANGE(-pi .. pi) *)
+		ball_distance : REAL;  (* RANGE(-pi .. pi) *)
     END_VAR
 
     VAR_OUTPUT
-        angle : REAL; (* RANGE() *)
+		r_right : REAL;
+		r_left : REAL;
     END_VAR
 
     FUZZIFY ball_angle
-        TERM left := (-180, 0) (-180, 1) (0, 0) ;
-        TERM front:= (-90, 0) (0, 1) (90, 0) ;
-        TERM right := (0, 0) (180, 1) (180, 0) ;
+        TERM left := (-180, 1) (-90, 0) (90, 0) (180, 1) ;
+        TERM front:= (-180, 0) (-15, 0) (0, 1) (15, 0) (180, 0) ;
+        TERM right := (-180, 0) (-90, 1) (90, 1) (180, 0) ;
     END_FUZZIFY
 
     FUZZIFY target_angle
-        TERM left := (-180, 0) (-180, 1) (0, 0) ;
-        TERM front:= (-90, 0) (0, 1) (90, 0) ;
-        TERM right := (0, 0) (180, 1) (180, 0) ;
+        TERM down := (-90, 1) (-20, 0) (90, 0) ;
+        TERM front := (-90, 0) (-45, 0) (0, 1) (45, 0) (90, 0) ;
+        TERM up := (-90, 0) (20, 0) (90, 1) ;
+    END_FUZZIFY
+	
+	FUZZIFY robot_spin
+        TERM fast := (-180, 1) (-90, 0) (90, 0) (180, 1) ;
+        TERM mid := (-180, 0) (-90, 0) (-45, 1) (0, 0) (45, 1) (90, 0) (180, 0) ;
+        TERM slow := (-180, 0) (-45, 0) (0, 1) (45, 0) (180, 0) ;
+    END_FUZZIFY
+	
+	FUZZIFY ball_distance
+        TERM far := (-180, 1) (-90, 0) (90, 0) (180, 1) ;
+        TERM mid:= (-180, 0) (-15, 0) (0, 1) (15, 0) (180, 0) ;
+        TERM close := (-180, 0) (-90, 1) (90, 1) (180, 0) ;
     END_FUZZIFY
 
-    DEFUZZIFY angle
-        TERM Left := -90;
-        TERM Front := 0;
-        TERM Right := 90;
+    DEFUZZIFY r_right
+        TERM Max := 1;
+		TERM Stop := 0;
+		TERM Weak := 0.25;
+		TERM Strong := 0.75;
+		TERM Mid := 0.5;
+		
+		
+		ACCU: MAX;
+        METHOD: COGS;(*MoM;*)
+        DEFAULT := 0; 
+    END_DEFUZZIFY
+	
+	DEFUZZIFY r_left
+        TERM Max := 1;
+		TERM Stop := 0;
+		TERM Weak := 0.25;
+		TERM Strong := 0.75;
+		TERM Mid := 0.5;
+		
+		
 		ACCU: MAX;
         METHOD: COGS;(*MoM;*)
         DEFAULT := 0; 
@@ -33,19 +65,16 @@ FUNCTION_BLOCK Inverted_Pendulum
     RULEBLOCK first
         AND:MIN;
         (*ACCU:MAX;*)
-        RULE 0: IF (ball_angle IS left) AND (target_angle IS left) THEN (angle IS Front);
-        RULE 1: IF (ball_angle IS left) AND (target_angle IS front) THEN (angle IS Left);
-        RULE 2: IF (ball_angle IS left) AND (target_angle IS right) THEN (angle IS Left);
-        RULE 3: IF (ball_angle IS front) AND (target_angle IS left) THEN (angle IS Right);
-        RULE 4: IF (ball_angle IS front) AND (target_angle IS front) THEN (angle IS Front);
-        RULE 5: IF (ball_angle IS front) AND (target_angle IS right) THEN (angle IS Left);
-        RULE 6: IF (ball_angle IS right) AND (target_angle IS left) THEN (angle IS Right);
-        RULE 7: IF (ball_angle IS right) AND (target_angle IS front) THEN (angle IS Right);
-        RULE 8: IF (ball_angle IS right) AND (target_angle IS right) THEN (angle IS Front);
 		
-        (*RULE 0: IF (ball_angle IS left) THEN (angle IS Left);*)
-        (*RULE 1: IF (ball_angle IS front) THEN (angle IS Front);*)
-        (*RULE 2: IF (ball_angle IS right) THEN (angle IS Right);*)
-    END_RULEBLOCK
+		RULE 0: IF (ball_angle IS left) THEN (r_right IS Left);
+		RULE 1: IF (ball_angle IS front) THEN (r_right IS Front);
+		RULE 2: IF (ball_angle IS right) THEN (r_right IS Front);
+		RULE 3: IF (ball_angle IS left) THEN (r_left IS Left);
+		RULE 4: IF (ball_angle IS front) THEN (r_left IS Front);
+		RULE 5: IF (ball_angle IS right) THEN (r_left IS Front);
+		
+		
+	END_RULEBLOCK	
+    
 
 END_FUNCTION_BLOCK
