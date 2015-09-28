@@ -13,9 +13,9 @@ FUNCTION_BLOCK Inverted_Pendulum
     END_VAR
 
     FUZZIFY ball_angle
-        TERM left := (180, 0) (180, 1) (90, 1) (0, 0) ;
-        TERM front:= (-180, 0) (0, 1) (180, 0) ;
-        TERM right := (-180, 0) (-180, 1) (-90, 1) (0, 0)  ;
+        TERM left := (-180, 0) (15, 0) (15, 1) (180, 1) ;
+        TERM front:= (-180, 0) (-15, 0) (-15, 1)(15, 1) (15, 0) (180, 0) ;
+        TERM right := (-180, 0) (-180, 1) (-15, 1) (-15, 0) (180, 0)  ;
     END_FUZZIFY
 
     FUZZIFY target_angle
@@ -27,13 +27,14 @@ FUNCTION_BLOCK Inverted_Pendulum
 	FUZZIFY robot_spin
         TERM fast := (-180, 1) (-90, 0) (90, 0) (180, 1) ;
         TERM mid := (-180, 0) (-90, 0) (-45, 1) (0, 0) (45, 1) (90, 0) (180, 0) ;
-        TERM slow := (-180, 0) (-45, 0) (0, 1) (45, 0) (180, 0) ;
+        TERM slow := (-180, 0) (-1, 0) (-1, 1) (-0.05, 1) (-0.05, 0) (0.05, 0) (0.05, 1) (1, 1) (1, 0) (180, 0) ;
+		TERM Stoped := (-180, 0) (-0.05, 0) (-0.05, 1) (0.05, 1) (0.05, 0) (180 0); 
     END_FUZZIFY
 	
 	FUZZIFY ball_distance
-        TERM far := (-180, 1) (-90, 0) (90, 0) (180, 1) ;
-        TERM mid:= (-180, 0) (-15, 0) (0, 1) (15, 0) (180, 0) ;
-        TERM close := (-180, 0) (-90, 1) (90, 1) (180, 0) ;
+        TERM far := (0, 0) (400, 0) (400, 1) (1000, 1) ;
+        TERM mid:= (0, 0) (200, 0) (200, 1) (400, 1) (400, 0) (1000, 0) ;
+        TERM close := (0, 1) (100, 1) (200, 1) (200, 0) (1000, 0) ;
     END_FUZZIFY
 
     DEFUZZIFY r_right
@@ -66,14 +67,18 @@ FUNCTION_BLOCK Inverted_Pendulum
         AND:MIN;
         (*ACCU:MAX;*)
 		
-		RULE 0: IF (ball_angle IS left) THEN (r_right IS Max);
-		RULE 1: IF (ball_angle IS front) THEN (r_right IS Strong);
-		RULE 2: IF (ball_angle IS right) THEN (r_right IS Stop);
+		RULE 0: IF (ball_angle IS left) THEN (r_right IS Weak);
+		RULE 1: IF (ball_angle IS front) AND (ball_distance IS close) AND (robot_spin IS Stoped) THEN (r_right IS Max);
+		RULE 2: IF (ball_angle IS front) AND (ball_distance IS mid) AND (robot_spin IS Stoped) THEN (r_right IS Mid);
+		RULE 3: IF (ball_angle IS front) AND (ball_distance IS far) AND (robot_spin IS Stoped) THEN (r_right IS Strong);
+		RULE 4: IF (ball_angle IS right) THEN (r_right IS Stop);
 		
 		
-		RULE 3: IF (ball_angle IS left) THEN (r_left IS Stop);
-		RULE 4: IF (ball_angle IS front) THEN (r_left IS Strong);
-		RULE 5: IF (ball_angle IS right) THEN (r_left IS Max);
+		RULE 5: IF (ball_angle IS left) THEN (r_left IS Stop);
+		RULE 6: IF (ball_angle IS front) AND (ball_distance IS close) AND (robot_spin IS Stoped) THEN (r_left IS Max);
+		RULE 7: IF (ball_angle IS front) AND (ball_distance IS mid) AND (robot_spin IS Stoped) THEN (r_left IS Mid);
+		RULE 8: IF (ball_angle IS front) AND (ball_distance IS far) AND (robot_spin IS Stoped) THEN (r_left IS Strong);
+		RULE 9: IF (ball_angle IS right) THEN (r_left IS Weak);
 		
 		
 	END_RULEBLOCK	
