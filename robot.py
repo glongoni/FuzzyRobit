@@ -37,6 +37,7 @@ while True:
 		my_input["robot_spin"] = math.degrees(sc.get_spin())
 		my_input["ball_distance"] = sc.get_ball_distance()
 		my_input["obstacle_distance"] = sc.get_obstacle_distance()
+		my_input["obstacle_angle"] = math.degrees(sc.get_obstacle_angle())
 		
 		# calculate
 		system.calculate(my_input, my_output)
@@ -47,7 +48,7 @@ while True:
 		
 		print "---------------------------------------------------------------------------------"
 		print "Ball_angle: ", my_input["ball_angle"], "target_angle ", my_input["target_angle"], "spin: " , my_input["robot_spin"]
-		print "Ball_distance", my_input["ball_distance"]
+		print "Ball_distance", my_input["ball_distance"], "obstacle angle: ", my_input["obstacle_angle"]
 		print "---------------------------------------------------------------------------------"
 		
 		#print "angle: ", angle, "left: ", force_left, "right: ", force_right
