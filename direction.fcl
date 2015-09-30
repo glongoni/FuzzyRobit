@@ -93,63 +93,63 @@ FUNCTION_BLOCK Direction
 		RULE 5: IF (obstacle_distance IS close) AND (ball_angle IS right) AND (obstacle_angle IS front) THEN (r_left IS Max);
 		
 		(* perto da parede, tenta se enquadrar na bola *)
-		RULE 6: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 6: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Mid);
 		RULE 7: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_left IS Stop);
-		RULE 8: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Weak);
-		RULE 9: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 8: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Mid);
+		RULE 9: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Mid);
 		RULE 10: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_right IS Stop);
-		RULE 11: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 11: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Mid);
 		
-		RULE 12: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 12: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Mid);
 		RULE 13: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_left IS Stop);
-		RULE 14: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 14: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Mid);
 		RULE 15: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_left IS Stop);
-		RULE 16: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Weak);
-		RULE 17: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Weak);
+		RULE 16: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Mid);
+		RULE 17: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Mid);
 		
-		RULE 18: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Weak);
-		RULE 19: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 18: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Mid);
+		RULE 19: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Mid);
 		RULE 20: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_right IS Stop);
-		RULE 21: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 21: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Mid);
 		RULE 22: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_right IS Stop);
-		RULE 23: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 23: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Mid);
 		
 		(* tenta se enquadrar na bola *)
-		RULE 24: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 24: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Mid);
 		RULE 25: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_left IS Stop);
-		RULE 26: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Weak);
-		RULE 27: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 26: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Mid);
+		RULE 27: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Mid);
 		RULE 28: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_right IS Stop);
-		RULE 29: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 29: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Mid);
 		
-		RULE 30: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 30: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Mid);
 		RULE 31: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_left IS Stop);
-		RULE 32: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 32: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Mid);
 		RULE 33: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_left IS Stop);
-		RULE 34: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Weak);
-		RULE 35: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Weak);
+		RULE 34: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Mid);
+		RULE 35: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Mid);
 		
-		RULE 36: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Weak);
-		RULE 37: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 36: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Mid);
+		RULE 37: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Mid);
 		RULE 38: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_right IS Stop);
-		RULE 39: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 39: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Mid);
 		RULE 40: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_right IS Stop);
-		RULE 41: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 41: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Mid);
 				
 		(* tenta chegar perto da bola*)
-		RULE 42: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) THEN (r_right IS Weak);
+		RULE 42: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) THEN (r_right IS Mid);
 		RULE 43: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) THEN (r_left IS Stop);
-		RULE 44: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_right IS Weak);
-		RULE 45: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_left IS Weak);
+		RULE 44: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_right IS Mid);
+		RULE 45: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_left IS Mid);
 		RULE 46: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) THEN (r_right IS Stop);
-		RULE 47: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) THEN (r_left IS Weak);
+		RULE 47: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) THEN (r_left IS Mid);
 		
-		RULE 48: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS left) THEN (r_right IS Weak);
+		RULE 48: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS left) THEN (r_right IS Mid);
 		RULE 49: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS left) THEN (r_left IS Stop);
-		RULE 50: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_right IS Weak);
-		RULE 51: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_left IS Weak);
+		RULE 50: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_right IS Mid);
+		RULE 51: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_left IS Mid);
 		RULE 52: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS right) THEN (r_right IS Stop);
-		RULE 53: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS right) THEN (r_left IS Weak);
+		RULE 53: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS right) THEN (r_left IS Mid);
 		
 		(* chuta *)		
 		
@@ -157,9 +157,9 @@ FUNCTION_BLOCK Direction
 		RULE 55: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS streight_left) AND (robot_spin IS stoped) THEN (r_left IS Max);
 		
 		RULE 56: IF (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS streight_left) THEN (r_right IS GoBack2);
-		RULE 57: IF (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS streight_left) THEN (r_left IS Weak);		
+		RULE 57: IF (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS streight_left) THEN (r_left IS Mid);		
 	
-		RULE 58: IF (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS streight_left) THEN (r_right IS Weak);
+		RULE 58: IF (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS streight_left) THEN (r_right IS Mid);
 		RULE 59: IF (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS streight_left) THEN (r_left IS GoBack2);
 		
 	END_RULEBLOCK	
