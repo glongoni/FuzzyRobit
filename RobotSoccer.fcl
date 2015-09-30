@@ -21,8 +21,8 @@ FUNCTION_BLOCK Inverted_Pendulum
     END_FUZZIFY
 	
 	FUZZIFY obstacle_distance
-        TERM far := (0, 0) (200, 0) (200, 1) (1000, 1) ;
-		TERM close := (0, 1) (200, 1) (200, 0) (1000, 0) ;
+        TERM far := (0, 0) (100, 0) (100, 1) (1000, 1) ;
+		TERM close := (0, 1) (100, 1) (100, 0) (1000, 0) ;
     END_FUZZIFY
 	
 	FUZZIFY obstacle_angle
@@ -104,26 +104,26 @@ FUNCTION_BLOCK Inverted_Pendulum
 		
 		RULE 8: IF (target_angle IS down_left) AND (ball_distance IS close) THEN (r_right IS Weak);
 		RULE 9: IF (target_angle IS down_right) AND (ball_distance IS close) THEN (r_right IS Stop);
-		RULE 10: IF (target_angle IS up_left) AND (ball_distance IS close) THEN (r_right IS Stop);
+		RULE 10: IF (target_angle IS up_left) AND (ball_distance IS close) THEN (r_right IS Weak);
 		RULE 11: IF (target_angle IS up_right) AND (ball_distance IS close) THEN (r_right IS Weak);
 		RULE 12: IF (target_angle IS streight_right) AND (ball_distance IS close) THEN (r_right IS Weak);
 		
 		RULE 13: IF (target_angle IS down_left) AND (ball_distance IS close) THEN (r_left IS Stop);
 		RULE 14: IF (target_angle IS down_right) AND (ball_distance IS close) THEN (r_left IS Weak);
-		RULE 15: IF (target_angle IS up_left)  AND (ball_distance IS close) THEN (r_left IS Weak);
+		RULE 15: IF (target_angle IS up_left)  AND (ball_distance IS close) THEN (r_left IS Stop);
 		RULE 16: IF (target_angle IS up_right) AND (ball_distance IS close) THEN (r_left IS Stop);
 		RULE 17: IF (target_angle IS streight_right) AND (ball_distance IS close) THEN (r_left IS Stop);
 	
 		
 		RULE 18: IF (target_angle IS down_left) THEN (r_right IS Weak);
 		RULE 19: IF (target_angle IS down_right) THEN (r_right IS Weakl);
-		RULE 20: IF (target_angle IS up_left) THEN (r_right IS Weakl);
+		RULE 20: IF (target_angle IS up_left) THEN (r_right IS Weak);
 		RULE 21: IF (target_angle IS up_right) THEN (r_right IS Weak);
 		RULE 22: IF (target_angle IS streight_right) THEN (r_right IS Weak);
 		
 		RULE 23: IF (target_angle IS down_left) THEN (r_left IS Weakl);
 		RULE 24: IF (target_angle IS down_right) THEN (r_left IS Weak);
-		RULE 25: IF (target_angle IS up_left)  THEN (r_left IS Weak);
+		RULE 25: IF (target_angle IS up_left)  THEN (r_left IS Weakl);
 		RULE 26: IF (target_angle IS up_right) THEN (r_left IS Weakl);
 		RULE 27: IF (target_angle IS streight_right) THEN (r_left IS Weakl);
 		

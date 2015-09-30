@@ -1,0 +1,168 @@
+FUNCTION_BLOCK Direction
+
+    VAR_INPUT
+        ball_angle : REAL; (* RANGE(-pi .. pi) *)
+		obstacle_angle : REAL;
+		robot_spin : REAL;
+		obstacle_distance : REAL;
+		target_angle: REAL;
+		ball_distance : REAL;
+    END_VAR
+
+    VAR_OUTPUT
+		r_right : REAL;
+		r_left : REAL;
+    END_VAR
+
+	FUZZIFY robot_spin
+        TERM stoped := (-180, 0) (-0.5, 0) (-0.5, 1) (0.5, 1) (0.5, 0) (180, 0) ;
+		TERM left := (-180, 0) (0.5, 0) (0.5, 1) (180, 1) ;
+		TERM right := (-180, 1) (-0.5, 1) (-0.5, 0) (180, 0) ;
+    END_FUZZIFY
+	
+    FUZZIFY ball_angle
+        TERM left := (0, 0) (180, 1) (180, 0) ;
+        TERM front:= (-90, 0) (0, 1) (90, 0) ;
+        TERM right := (-180, 0) (-180, 1) (0, 0) ;
+    END_FUZZIFY
+	
+    FUZZIFY target_angle
+        TERM left := (0, 0) (90, 1) (180, 1) (180, 0) ;
+        TERM front:= (-20, 0) (0, 1) (20, 0) ;
+        TERM right := (-180, 0) (-180, 1) (-90, 1) (0, 0) ;
+		TERM streight_left := (-180, 0) (-25, 0) (-25, 1) (25, 1) (25, 0) (180, 0) ;
+    END_FUZZIFY
+	
+    FUZZIFY obstacle_angle
+        TERM left := (0, 0) (180, 1) (180, 0) ;
+        TERM front:= (-90, 0) (0, 1) (90, 0) ;
+        TERM right := (-180, 0) (-180, 1) (0, 0) ;
+    END_FUZZIFY
+	
+    FUZZIFY obstacle_distance
+        TERM close := (-10, 0) (-10, 1) (30, 1) (50, 0) ;
+        TERM far := (30, 0) (200, 1) (3000, 1) (3000, 0) ;
+    END_FUZZIFY
+	 
+    FUZZIFY ball_distance
+		TERM kick_distance := (-10, 0) (-10, 1) (40, 1) (80, 0) ;
+        TERM close := (0, 0) (40, 1) (150, 1) (500, 0) ;
+        TERM far := (150, 0) (500, 1) (3000, 1) (3000, 0) ;
+    END_FUZZIFY
+	
+    DEFUZZIFY r_right
+		TERM Max2 := 3;
+        TERM Max := 1;
+		TERM Stop := 0;
+		TERM Weak := 0.25;
+		TERM Strong := 0.75;
+		TERM Mid := 0.5;
+		TERM GoBack := -1;
+		TERM GoBack2 := -0.25;
+		
+		
+		ACCU: MAX;
+        METHOD: COGS;(*MoM;*)
+        DEFAULT := 0; 
+    END_DEFUZZIFY
+	
+	DEFUZZIFY r_left
+		TERM Max2 := 3;
+        TERM Max := 1;
+		TERM Stop := 0;
+		TERM Weak := 0.25;
+		TERM Strong := 0.75;
+		TERM Mid := 0.5;
+		TERM GoBack := -1;
+		TERM GoBack2 := -0.25;
+		
+		
+		ACCU: MAX;
+        METHOD: COGS;(*MoM;*)
+        DEFAULT := 0; 
+    END_DEFUZZIFY
+	
+    RULEBLOCK first
+        AND:MIN;
+        (*ACCU:MAX;*)
+				
+		(* sai da parede *)
+		RULE 0: IF (obstacle_distance IS close) AND (ball_angle IS left) AND (obstacle_angle IS front) THEN (r_right IS Max);
+		RULE 1: IF (obstacle_distance IS close) AND (ball_angle IS left) AND (obstacle_angle IS front) THEN (r_left IS GoBack);
+		RULE 4: IF (obstacle_distance IS close) AND (ball_angle IS right) AND (obstacle_angle IS front) THEN (r_right IS GoBack);
+		RULE 5: IF (obstacle_distance IS close) AND (ball_angle IS right) AND (obstacle_angle IS front) THEN (r_left IS Max);
+		
+		(* perto da parede, tenta se enquadrar na bola *)
+		RULE 6: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 7: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_left IS Stop);
+		RULE 8: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 9: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 10: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_right IS Stop);
+		RULE 11: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Weak);
+		
+		RULE 12: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 13: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_left IS Stop);
+		RULE 14: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 15: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_left IS Stop);
+		RULE 16: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 17: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Weak);
+		
+		RULE 18: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Weak);
+		RULE 19: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 20: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_right IS Stop);
+		RULE 21: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 22: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_right IS Stop);
+		RULE 23: IF (ball_distance IS close) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Weak);
+		
+		(* tenta se enquadrar na bola *)
+		RULE 24: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 25: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS front) THEN (r_left IS Stop);
+		RULE 26: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_right IS Weak);
+		RULE 27: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS front) THEN (r_left IS Weak);
+		RULE 28: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_right IS Stop);
+		RULE 29: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS front) THEN (r_left IS Weak);
+		
+		RULE 30: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 31: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS right) THEN (r_left IS Stop);
+		RULE 32: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 33: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS right) THEN (r_left IS Stop);
+		RULE 34: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_right IS Weak);
+		RULE 35: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS right) THEN (r_left IS Weak);
+		
+		RULE 36: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_right IS Weak);
+		RULE 37: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 38: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_right IS Stop);
+		RULE 39: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS left) THEN (r_left IS Weak);
+		RULE 40: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_right IS Stop);
+		RULE 41: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS left) THEN (r_left IS Weak);
+				
+		(* tenta chegar perto da bola*)
+		RULE 42: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) THEN (r_right IS Weak);
+		RULE 43: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS left) THEN (r_left IS Stop);
+		RULE 44: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_right IS Weak);
+		RULE 45: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS front) THEN (r_left IS Weak);
+		RULE 46: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) THEN (r_right IS Stop);
+		RULE 47: IF (ball_distance IS far) AND (obstacle_distance IS close) AND (obstacle_angle IS NOT front) AND (ball_angle IS right) THEN (r_left IS Weak);
+		
+		RULE 48: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS left) THEN (r_right IS Weak);
+		RULE 49: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS left) THEN (r_left IS Stop);
+		RULE 50: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_right IS Weak);
+		RULE 51: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS front) THEN (r_left IS Weak);
+		RULE 52: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS right) THEN (r_right IS Stop);
+		RULE 53: IF (ball_distance IS far) AND (obstacle_distance IS far) AND (ball_angle IS right) THEN (r_left IS Weak);
+		
+		(* chuta *)		
+		
+		RULE 54: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS streight_left) AND (robot_spin IS stoped) THEN (r_right IS Max);
+		RULE 55: IF (ball_distance IS close) AND (obstacle_distance IS far) AND (ball_angle IS front) AND (target_angle IS streight_left) AND (robot_spin IS stoped) THEN (r_left IS Max);
+		
+		RULE 56: IF (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS streight_left) THEN (r_right IS GoBack2);
+		RULE 57: IF (obstacle_distance IS far) AND (ball_angle IS right) AND (target_angle IS streight_left) THEN (r_left IS Weak);		
+	
+		RULE 58: IF (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS streight_left) THEN (r_right IS Weak);
+		RULE 59: IF (obstacle_distance IS far) AND (ball_angle IS left) AND (target_angle IS streight_left) THEN (r_left IS GoBack2);
+		
+	END_RULEBLOCK	
+    
+
+END_FUNCTION_BLOCK
