@@ -3,8 +3,8 @@ import sys
 import math
 import time
 
-sys.path.insert(0, "C:\Users\Guilherme\Documents\Projetos\robotsoccer-python")
-sys.path.insert(0, "C:\Users\Guilherme\Documents\Projetos\pyfuzzy-0.1.0")
+sys.path.insert(0, "..\robotsoccer-python")
+sys.path.insert(0, "..\pyfuzzy-0.1.0")
 
 import fuzzy.storage.fcl.Reader
 from robotsoccer import SoccerClient
